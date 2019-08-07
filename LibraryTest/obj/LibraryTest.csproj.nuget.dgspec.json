@@ -1,0 +1,135 @@
+{
+  "format": 1,
+  "restore": {
+    "E:\\shazan\\CallerInfoEx\\LibraryTest\\LibraryTest.csproj": {}
+  },
+  "projects": {
+    "E:\\shazan\\CallerInfoEx\\CallerInfoEx\\CallerInfoEx.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "E:\\shazan\\CallerInfoEx\\CallerInfoEx\\CallerInfoEx.csproj",
+        "projectName": "CallerInfoEx.Fody",
+        "projectPath": "E:\\shazan\\CallerInfoEx\\CallerInfoEx\\CallerInfoEx.csproj",
+        "packagesPath": "C:\\Users\\Shaz\\.nuget\\packages\\",
+        "outputPath": "E:\\shazan\\CallerInfoEx\\CallerInfoEx\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Shaz\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {},
+          "https://packages.xenko.com/nuget": {}
+        },
+        "frameworks": {
+          "netstandard2.0": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "noWarn": [
+            "NU5118"
+          ],
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard2.0": {
+          "dependencies": {
+            "Fody": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[5.1.1, )"
+            },
+            "FodyPackaging": {
+              "target": "Package",
+              "version": "[5.1.1, )"
+            },
+            "NETStandard.Library": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.0.3, )",
+              "autoReferenced": true
+            }
+          },
+          "imports": [
+            "net461"
+          ],
+          "assetTargetFallback": true,
+          "warn": true
+        }
+      }
+    },
+    "E:\\shazan\\CallerInfoEx\\LibraryTest\\LibraryTest.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "E:\\shazan\\CallerInfoEx\\LibraryTest\\LibraryTest.csproj",
+        "projectName": "LibraryTest",
+        "projectPath": "E:\\shazan\\CallerInfoEx\\LibraryTest\\LibraryTest.csproj",
+        "packagesPath": "C:\\Users\\Shaz\\.nuget\\packages\\",
+        "outputPath": "E:\\shazan\\CallerInfoEx\\LibraryTest\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Shaz\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {},
+          "https://packages.xenko.com/nuget": {}
+        },
+        "frameworks": {
+          "netstandard2.0": {
+            "projectReferences": {
+              "E:\\shazan\\CallerInfoEx\\CallerInfoEx\\CallerInfoEx.csproj": {
+                "projectPath": "E:\\shazan\\CallerInfoEx\\CallerInfoEx\\CallerInfoEx.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard2.0": {
+          "dependencies": {
+            "NETStandard.Library": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.0.3, )",
+              "autoReferenced": true
+            }
+          },
+          "imports": [
+            "net461"
+          ],
+          "assetTargetFallback": true,
+          "warn": true
+        }
+      }
+    }
+  }
+}
