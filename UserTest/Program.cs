@@ -12,10 +12,11 @@ namespace UserTest
         static void Main(string[] args)
         {
             var c1 = new Class1();
-            c1.Space();
-            c1.Space();
-            c1.Space1(45);
-            c1.Space1(43);
+            c1.PrintId();
+            c1.PrintId();
+            c1.PrintId(45);
+            c1.PrintId(43);
+            Console.ReadKey();
         }
     }
 }

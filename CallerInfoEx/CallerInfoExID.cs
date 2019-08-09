@@ -7,7 +7,8 @@ namespace CallerInfoEx
     /// <summary>
     /// 
     /// </summary>
-    public class CallerInfoExIDAttribute : Attribute
+    [System.AttributeUsage(AttributeTargets.Parameter,Inherited = false)]
+    public sealed class IDAttribute : Attribute
     {
 
     }
