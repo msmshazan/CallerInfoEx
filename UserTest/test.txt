@@ -1,5 +1,0 @@
-LibraryTest
-System.Void LibraryTest.Class1::PrintId(System.UInt64,System.Nullable`1<System.UInt64>)
-System.Void LibraryTest.Class1::PrintId(System.UInt64,System.Nullable`1<System.UInt64>)
-System.Void LibraryTest.Class1::PrintId(System.Nullable`1<System.UInt64>)
-System.Void LibraryTest.Class1::PrintId(System.Nullable`1<System.UInt64>)

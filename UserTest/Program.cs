@@ -12,10 +12,15 @@ namespace UserTest
         static void Main(string[] args)
         {
             var c1 = new Class1();
-            c1.PrintId();
-            c1.PrintId();
-            c1.PrintId(45);
-            c1.PrintId(43);
+            c1.PrintAllArguments();
+            c1.PrintAllArguments();
+            c1.PrintAllArguments(54,id1:32);
+            c1.PrintAllArguments(45);
+            c1.PrintAllArguments(43);
+            c1.PrintAllArgumentsInlined(45);
+            c1.PrintAllArgumentsInlined(null,43);
+            c1.PrintAllArgumentsInlined(32,43);
+            c1.lotsofargs();
             Console.ReadKey();
         }
     }
