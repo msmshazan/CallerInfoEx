@@ -20,6 +20,7 @@ namespace UserTest
             c1.PrintAllArgumentsInlined(45);
             c1.PrintAllArgumentsInlined(null,43);
             c1.PrintAllArgumentsInlined(32,43);
+           // c1.Test2(74, 78.75f);
             c1.lotsofargs();
             Console.ReadKey();
         }

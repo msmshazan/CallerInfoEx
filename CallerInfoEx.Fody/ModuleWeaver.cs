@@ -25,7 +25,7 @@ namespace CallerInfoEx.Fody
                 var nullableulongconstructor = typeof(ulong?).GetConstructor(new[] { typeof(ulong) });
                 var allmethods = this.ModuleDefinition.GetAllTypes().SelectMany(x => x.Methods.AsEnumerable()).Where(x => x.HasBody).Where(x => x.Body.Instructions.Any(p => p.OpCode == OpCodes.Callvirt));
                 var allinstructions = allmethods.ToDictionary(t => t, X => X.Body.Instructions.Where(x => x.OpCode == OpCodes.Callvirt && (x.Operand as MethodReference).Resolve().HasParameters).Where(x => (x.Operand as MethodReference).Resolve().DeclaringType.Namespace == FunctionNamespace).Where(x => (x.Operand as MethodReference).Resolve().Parameters.Any(t => t.HasCustomAttributes)).Where(x => (x.Operand as MethodReference).Resolve().Parameters.Any(t => t.CustomAttributes.Any(p => p.AttributeType.Name == FunctionParameterAttribute))).Reverse());
-                var ils = new List<Instruction>();
+                var ils = new List<string>();
                 foreach (var methodinstructions in allinstructions)
                 {
                     var method = methodinstructions.Key;
@@ -41,9 +41,15 @@ namespace CallerInfoEx.Fody
                             var ins = method.Body.Instructions.IndexOf(ILinstruction);
                             var methoddeclaration = (ILinstruction.Operand as MethodReference).Resolve();
                             var parameterindexes = methoddeclaration.Parameters.Where(x => x.HasCustomAttributes).Where(x => x.CustomAttributes.Any(p => p.AttributeType.Name == FunctionParameterAttribute)).Select(x => methoddeclaration.Parameters.IndexOf(x));
-
+                            var currentparamindex = methoddeclaration.Parameters.Count - 1;
                             while (!(method.Body.Instructions[ins].Previous.OpCode == OpCodes.Nop))
                             {
+                                if (CheckILPushesArgument(method.Body.Instructions[ins], ModuleDefinition.ImportReference( methoddeclaration.Parameters[currentparamindex].ParameterType)))
+                                {
+                                    ils.Add("Current param:" + ModuleDefinition.ImportReference(methoddeclaration.Parameters[currentparamindex].ParameterType).Resolve().FullName + "  :" + method.FullName);
+                                    currentparamindex--;
+                                }
+
                                 if (method.Body.Instructions[ins].Previous.OpCode == OpCodes.Ldloc_1
                                  | method.Body.Instructions[ins].Previous.OpCode == OpCodes.Ldloc_2
                                 | method.Body.Instructions[ins].Previous.OpCode == OpCodes.Ldloc_3
@@ -56,8 +62,9 @@ namespace CallerInfoEx.Fody
                                             if (method.Body.Instructions[ins].Previous.Previous.Previous.OpCode == OpCodes.Ldloca_S
                                             || (method.Body.Instructions[ins].Previous.Previous.Previous.OpCode == OpCodes.Ldloca))
                                             {
-                                                ils.Add(method.Body.Instructions[ins]);
+                                                ils.Add(method.Body.Instructions[ins].ToString());
                                                 //instructionpoints.Add(method.Body.Instructions[ins]);
+                                                if(false)
                                                 {
                                                     var instruction = method.Body.Instructions[ins];
                                                     var methodref = (instruction.Operand as MethodReference);
@@ -90,7 +97,8 @@ namespace CallerInfoEx.Fody
                             }
                             instructionpoints.Add(ILinstruction);
                         }
-                        File.WriteAllLines("ils.txt", ils.Select(x => x.ToString()));
+                        ils.Reverse();
+                        File.WriteAllLines("ils.txt", ils);
                         var localvarindex = 0;
                         foreach (var instruction in instructionpoints)
                         {
@@ -102,6 +110,48 @@ namespace CallerInfoEx.Fody
             }
         }
 
+        private bool CheckILPushesArgument(Instruction IL,TypeReference ParameterType)
+        {
+            bool Result = false;
+            var Op =  IL.OpCode;
+            if (ParameterType.IsByReference)
+            {
+                if (Op.StackBehaviourPush == StackBehaviour.Pushref) Result = true;
+            }
+            if (ParameterType.IsPrimitive)
+            {
+                if (ParameterType == ModuleDefinition.ImportReference( typeof(long)) && Op.StackBehaviourPush == StackBehaviour.Pushi8) Result = true;
+                if (ParameterType == ModuleDefinition.ImportReference( typeof(int)) && Op.StackBehaviourPush == StackBehaviour.Pushi) Result = true;
+                if (ParameterType == ModuleDefinition.ImportReference( typeof(float)) && Op.StackBehaviourPush == StackBehaviour.Pushr4) Result = true;
+                if (ParameterType == ModuleDefinition.ImportReference( typeof(double)) && Op.StackBehaviourPush == StackBehaviour.Pushr8) Result = true;
+            }
+            else
+            {
+                if (ParameterType.IsGenericInstance)
+                {
+                    var GenInstance = ParameterType as GenericInstanceType;
+                    
+                    {
+                        if (Op.StackBehaviourPush == StackBehaviour.Push0)
+                        {
+                            Result = true;
+                        }
+                        else
+                        {
+                            {
+                                if (ParameterType == ModuleDefinition.ImportReference(typeof(long?)) && Op.StackBehaviourPush == StackBehaviour.Pushi8) Result = true;
+                                if (ParameterType == ModuleDefinition.ImportReference(typeof(int?)) && Op.StackBehaviourPush == StackBehaviour.Pushi) Result = true;
+                                if (ParameterType == ModuleDefinition.ImportReference(typeof(float?)) && Op.StackBehaviourPush == StackBehaviour.Pushr4) Result = true;
+                                if (ParameterType == ModuleDefinition.ImportReference(typeof(double?)) && Op.StackBehaviourPush == StackBehaviour.Pushr8) Result = true;
+                            }
+                        }
+                    }
+                }
+
+                
+            }
+            return Result;
+        }
 
         public override IEnumerable<string> GetAssembliesForScanning()
         {
